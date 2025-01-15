@@ -10,18 +10,22 @@ const commitment: Commitment = "confirmed";
 const connection = new Connection("https://api.devnet.solana.com", commitment);
 
 // Mint address
-const mint = new PublicKey("<mint address>");
+const mint = new PublicKey("FCHQBZPGen6YLBmJGYCVP8nFX6uCsED5Abe4mUZUE55o");
 
 // Recipient address
-const to = new PublicKey("<receiver address>");
+const to = new PublicKey("HNUGFTXCqqbmT4GR89zXfHocWeGcSk4jikhpnqkgP6zw");
 
 (async () => {
     try {
         // Get the token account of the fromWallet address, and if it does not exist, create it
+        const fromWalletAccount = await getOrCreateAssociatedTokenAccount(connection, keypair, mint, keypair.publicKey);
 
         // Get the token account of the toWallet address, and if it does not exist, create it
+        const toWalletAccount = await getOrCreateAssociatedTokenAccount(connection, keypair, mint, to);
 
         // Transfer the new token to the "toTokenAccount" we just created
+        const tx = await transfer(connection, keypair, fromWalletAccount.address, toWalletAccount.address, keypair, 1);
+        console.log(`sent ${tx}`);
     } catch(e) {
         console.error(`Oops, something went wrong: ${e}`)
     }
