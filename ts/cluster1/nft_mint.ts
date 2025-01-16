@@ -14,13 +14,22 @@ umi.use(signerIdentity(myKeypairSigner));
 umi.use(mplTokenMetadata())
 
 const mint = generateSigner(umi);
+//https://arweave.net/2b6XHiEY28jKSzh88ZsxzKhtEK7tEEaxLN9m9VP7XaUY
 
 (async () => {
-    // let tx = ???
-    // let result = await tx.sendAndConfirm(umi);
-    // const signature = base58.encode(result.signature);
+    let tx = createNft(umi, {
+        mint,
+        name: "turbin3 Rug",
+        uri: "https://arweave.net/2b6XHiEY28jKSzh88ZsxzKhtEK7tEEaxLN9m9VP7XaUY",
+        sellerFeeBasisPoints: percentAmount(10, 2),
+        collection: null,
+        uses: null,
+        symbol: "RUG"
+    });
+    let result = await tx.sendAndConfirm(umi);
+    const signature = base58.encode(result.signature);
     
-    // console.log(`Succesfully Minted! Check out your TX here:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`)
+    console.log(`Succesfully Minted! Check out your TX here:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`)
 
     console.log("Mint Address: ", mint.publicKey);
 })();
